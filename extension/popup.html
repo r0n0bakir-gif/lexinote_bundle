@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>LexiNote</title>
+    <style>
+      body {
+        font-family: Georgia, "Times New Roman", serif;
+        background: radial-gradient(circle at top left, rgba(241, 202, 133, 0.16), transparent 30%), #211d1a;
+        color: #f7efe7;
+        width: 340px;
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 22px;
+        margin: 0 0 10px;
+      }
+
+      p {
+        font-size: 13px;
+        line-height: 1.5;
+        opacity: 0.9;
+        margin: 0 0 14px;
+      }
+
+      .panel {
+        border-radius: 18px;
+        background: rgba(255, 248, 241, 0.08);
+        padding: 14px;
+        margin-bottom: 14px;
+      }
+
+      label {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 6px;
+        color: rgba(247, 239, 231, 0.84);
+      }
+
+      input[type="text"] {
+        width: 100%;
+        border: 1px solid rgba(255, 248, 241, 0.16);
+        border-radius: 14px;
+        padding: 10px 12px;
+        margin-bottom: 12px;
+        background: rgba(255, 248, 241, 0.96);
+        color: #2a211d;
+        box-sizing: border-box;
+      }
+
+      .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        color: rgba(247, 239, 231, 0.86);
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      button {
+        border: 0;
+        border-radius: 999px;
+        padding: 13px 14px;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      #captureBtn {
+        flex: 1;
+        background: #ea8f6a;
+        color: #fff9f4;
+        box-shadow: 0 10px 20px rgba(209, 108, 68, 0.25);
+      }
+
+      #saveSettingsBtn {
+        background: rgba(255, 248, 241, 0.12);
+        color: #f7efe7;
+      }
+
+      #status {
+        margin-top: 12px;
+        font-size: 12px;
+        min-height: 18px;
+      }
+
+      .hint {
+        margin-top: 10px;
+        padding: 10px 12px;
+        border-radius: 16px;
+        background: rgba(255, 248, 241, 0.08);
+        font-size: 12px;
+        color: rgba(247, 239, 231, 0.74);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>LexiNote</h1>
+    <p>Capture from Linguee, PONS, or Verbformen, then hand the word off to your LexiNote app.</p>
+
+    <div class="panel">
+      <label for="appBaseUrl">LexiNote app URL</label>
+      <input id="appBaseUrl" type="text" placeholder="http://localhost:3000" />
+
+      <label for="preferredDeck">Deck for captured words</label>
+      <input id="preferredDeck" type="text" placeholder="Quick Capture" />
+
+      <label class="checkbox-row" for="queueAiEnrichment">
+        <input id="queueAiEnrichment" type="checkbox" />
+        Queue AI enrichment after capture
+      </label>
+    </div>
+
+    <div class="actions">
+      <button id="captureBtn">Capture word</button>
+      <button id="saveSettingsBtn" type="button">Save settings</button>
+    </div>
+
+    <div id="status"></div>
+    <div class="hint">Tip: the on-page LexiNote button now works too, using the same settings saved here.</div>
+    <script src="popup.js"></script>
+  </body>
+</html>

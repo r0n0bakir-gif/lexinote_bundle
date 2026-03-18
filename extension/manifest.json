@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "LexiNote Capture",
+  "version": "0.4.0",
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "host_permissions": [
+    "https://*.linguee.de/*",
+    "https://linguee.de/*",
+    "https://*.pons.com/*",
+    "https://*.verbformen.com/*",
+    "https://verbformen.com/*",
+    "http://localhost:3000/*"
+  ],
+  "action": { "default_popup": "popup.html" },
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.linguee.de/*",
+        "https://linguee.de/*",
+        "https://*.pons.com/*",
+        "https://*.verbformen.com/*",
+        "https://verbformen.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ]
+}

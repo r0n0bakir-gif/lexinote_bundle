@@ -1,0 +1,262 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+html[data-theme="cozy"] {
+  --bg: #1d1814;
+  --bg-soft: #2a221d;
+  --bg-elevated: rgba(47, 38, 32, 0.84);
+  --surface: rgba(248, 243, 236, 0.94);
+  --surface-soft: rgba(255, 251, 246, 0.72);
+  --surface-strong: #fffaf4;
+  --surface-overlay: rgba(255, 248, 241, 0.08);
+  --line: rgba(114, 90, 72, 0.16);
+  --line-strong: rgba(114, 90, 72, 0.28);
+  --text: #231b16;
+  --text-soft: #65584d;
+  --text-muted: #8d7a6d;
+  --text-inverse: #fff7f0;
+  --text-muted-inverse: rgba(255, 247, 240, 0.72);
+  --accent: #d77b56;
+  --accent-strong: #b95e39;
+  --accent-soft: rgba(215, 123, 86, 0.12);
+  --accent-mint: #90b8a8;
+  --accent-gold: #e5bd76;
+  --shadow-sm: 0 10px 24px rgba(27, 19, 14, 0.1);
+  --shadow-md: 0 20px 48px rgba(20, 13, 10, 0.16);
+  --shadow-lg: 0 32px 80px rgba(16, 11, 9, 0.24);
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-emphasis: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html[data-theme="linen"] {
+  --bg: #f2ece3;
+  --bg-soft: #e7ddd2;
+  --bg-elevated: rgba(250, 245, 238, 0.86);
+  --surface: rgba(255, 252, 247, 0.98);
+  --surface-soft: rgba(255, 255, 255, 0.76);
+  --surface-strong: #ffffff;
+  --surface-overlay: rgba(255, 255, 255, 0.58);
+  --line: rgba(133, 108, 87, 0.14);
+  --line-strong: rgba(133, 108, 87, 0.24);
+  --text: #2d241e;
+  --text-soft: #66594f;
+  --text-muted: #918175;
+  --text-inverse: #2d241e;
+  --text-muted-inverse: rgba(45, 36, 30, 0.72);
+  --accent: #c87456;
+  --accent-strong: #a95537;
+  --accent-soft: rgba(200, 116, 86, 0.1);
+  --accent-mint: #8ea99f;
+  --accent-gold: #d8ba85;
+  --shadow-sm: 0 10px 24px rgba(70, 52, 38, 0.06);
+  --shadow-md: 0 18px 40px rgba(74, 59, 46, 0.1);
+  --shadow-lg: 0 28px 64px rgba(74, 59, 46, 0.14);
+}
+
+html[data-theme="midnight"] {
+  --bg: #0d131b;
+  --bg-soft: #121a24;
+  --bg-elevated: rgba(18, 26, 36, 0.82);
+  --surface: rgba(18, 25, 35, 0.94);
+  --surface-soft: rgba(24, 34, 46, 0.72);
+  --surface-strong: #1a2532;
+  --surface-overlay: rgba(242, 246, 250, 0.06);
+  --line: rgba(151, 172, 191, 0.14);
+  --line-strong: rgba(151, 172, 191, 0.24);
+  --text: #edf3f7;
+  --text-soft: #b6c2cf;
+  --text-muted: #8d9dac;
+  --text-inverse: #edf3f7;
+  --text-muted-inverse: rgba(237, 243, 247, 0.72);
+  --accent: #d08a63;
+  --accent-strong: #ea9d72;
+  --accent-soft: rgba(208, 138, 99, 0.12);
+  --accent-mint: #7fa2a1;
+  --accent-gold: #d7b26e;
+  --shadow-sm: 0 10px 24px rgba(3, 8, 14, 0.22);
+  --shadow-md: 0 20px 48px rgba(3, 8, 14, 0.28);
+  --shadow-lg: 0 32px 80px rgba(3, 8, 14, 0.36);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-ui), sans-serif;
+  letter-spacing: -0.01em;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(229, 189, 118, 0.18), transparent 24%),
+    radial-gradient(circle at 90% 0%, rgba(144, 184, 168, 0.14), transparent 22%),
+    linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 52%, color-mix(in srgb, var(--bg) 86%, black) 100%);
+  color: var(--text-inverse);
+  transition:
+    background 360ms var(--ease-standard),
+    color 220ms var(--ease-standard);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5), transparent 88%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display), serif;
+  font-variation-settings: "SOFT" 40, "WONK" 0;
+  letter-spacing: -0.035em;
+}
+
+p,
+label,
+input,
+textarea,
+button,
+select,
+div,
+span {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  transition:
+    background-color 220ms var(--ease-standard),
+    border-color 220ms var(--ease-standard),
+    color 220ms var(--ease-standard),
+    box-shadow 220ms var(--ease-standard),
+    transform 220ms var(--ease-standard);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+}
+
+.app-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.04), transparent 16%),
+    radial-gradient(circle at 80% 0%, color-mix(in srgb, var(--accent-gold) 12%, transparent), transparent 20%);
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.panel-surface {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-md);
+}
+
+@keyframes motionFadeUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.985);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes motionFadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes motionFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+.motion-enter {
+  animation: motionFadeUp 720ms var(--ease-emphasis) both;
+}
+
+.motion-enter-soft {
+  animation: motionFadeIn 520ms var(--ease-standard) both;
+}
+
+.motion-rise-sm {
+  transition:
+    transform 240ms var(--ease-standard),
+    box-shadow 240ms var(--ease-standard),
+    border-color 240ms var(--ease-standard),
+    background-color 240ms var(--ease-standard);
+  will-change: transform;
+}
+
+.motion-rise-sm:hover {
+  transform: translate3d(0, -3px, 0);
+}
+
+.motion-float {
+  animation: motionFloat 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  button,
+  input,
+  textarea,
+  select,
+  .motion-enter,
+  .motion-enter-soft,
+  .motion-rise-sm,
+  .motion-float {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
