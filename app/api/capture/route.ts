@@ -1,5 +1,6 @@
 import { requireCurrentUser } from "@/lib/current-user";
 import { createWord } from "@/lib/word-create";
+import { hasRequiredAiEnvVars } from "@/lib/env";
 
 export async function POST(req: Request) {
   try {
@@ -7,8 +8,9 @@ export async function POST(req: Request) {
     const body = await req.json();
     const deckName =
       typeof body.deckName === "string" && body.deckName.trim() ? body.deckName.trim() : "Quick Capture";
+    const aiEnabled = hasRequiredAiEnvVars();
     const queueAiEnrichment =
-      typeof body.queueAiEnrichment === "boolean" ? body.queueAiEnrichment : true;
+      aiEnabled && (typeof body.queueAiEnrichment === "boolean" ? body.queueAiEnrichment : true);
     const word = await createWord(supabase, user.id, {
       germanWord: body.germanWord,
       translation: body.translation,
@@ -26,6 +28,7 @@ export async function POST(req: Request) {
       message: "Word saved to database",
       deckName,
       enriched: queueAiEnrichment,
+      aiEnabled,
       word,
     });
   } catch (error) {

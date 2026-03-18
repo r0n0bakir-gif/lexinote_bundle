@@ -1,5 +1,6 @@
 import { createWord } from "@/lib/word-create";
 import { requireCurrentUser } from "@/lib/current-user";
+import { hasRequiredAiEnvVars } from "@/lib/env";
 
 export async function GET(req: Request) {
   try {
@@ -71,6 +72,7 @@ export async function POST(req: Request) {
   try {
     const { user, supabase } = await requireCurrentUser();
     const body = await req.json();
+    const aiEnabled = hasRequiredAiEnvVars();
     const word = await createWord(supabase, user.id, {
       germanWord: body.germanWord,
       translation: body.translation,
@@ -80,9 +82,9 @@ export async function POST(req: Request) {
       partOfSpeech: body.partOfSpeech,
       gender: body.gender || null,
       tags: body.tags ?? [],
-      queueAiEnrichment: body.queueAiEnrichment ?? false,
+      queueAiEnrichment: aiEnabled && (body.queueAiEnrichment ?? false),
     });
-    return Response.json({ ok: true, word, enriched: Boolean(body.queueAiEnrichment) });
+    return Response.json({ ok: true, word, enriched: aiEnabled && Boolean(body.queueAiEnrichment) });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     const status = message === "Unauthorized" ? 401 : 400;

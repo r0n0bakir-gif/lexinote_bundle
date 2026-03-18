@@ -1,8 +1,16 @@
+import { hasRequiredAiEnvVars } from "@/lib/env";
 import { requireCurrentUser } from "@/lib/current-user";
 import { generateWordEnrichment } from "@/lib/enrich-word";
 
 export async function POST(_req: Request, context: { params: Promise<{ id: string }> }) {
   try {
+    if (!hasRequiredAiEnvVars()) {
+      return Response.json(
+        { ok: false, error: "AI enrichment is unavailable until OPENAI_API_KEY is configured." },
+        { status: 503 }
+      );
+    }
+
     const { user, supabase } = await requireCurrentUser();
     const { id } = await context.params;
     const { data: word, error: fetchError } = await supabase.from("words").select("id, german_word, translation, notes").eq("id", id).eq("user_id", user.id).single();
