@@ -5,10 +5,12 @@ import {
   hasRequiredPublicEnvVars,
   hasRequiredAiEnvVars,
 } from "@/lib/env";
+import { getOptionalCurrentUser } from "@/lib/current-user";
 
-export default function HomePage() {
+export default async function HomePage() {
   if (hasRequiredPublicEnvVars()) {
-    redirect("/dashboard");
+    const { user } = await getOptionalCurrentUser();
+    redirect(user ? "/dashboard" : "/auth");
   }
 
   const missingVars = getMissingPublicEnvVars();

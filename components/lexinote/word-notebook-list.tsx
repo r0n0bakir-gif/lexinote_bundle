@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BookMarked, Sparkles, Tag, Trash2 } from "lucide-react";
+import { BookMarked, HelpCircle, Sparkles, Tag, Trash2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,41 @@ import { deleteWord, type NotebookWord } from "@/lib/word-fetch";
 import type { DeckSummary } from "@/lib/deck-fetch";
 import { EditWordDialog } from "@/components/lexinote/edit-word-dialog";
 import { EnrichWordButton } from "@/components/lexinote/enrich-word-button";
+
+// WHY: CEFR color bands match the notebook-filters chips so they read as a
+// coherent visual system: green=beginner, amber=intermediate, violet=advanced.
+function CefrBadge({ level }: { level: string | null | undefined }) {
+  if (!level) {
+    return (
+      <span
+        title="CEFR level not yet determined — click AI Enrich to populate"
+        className="inline-flex items-center gap-1 rounded-full border border-[color:var(--line)] px-2.5 py-0.5 text-[11px] font-medium text-[color:var(--text-muted)]"
+      >
+        <HelpCircle className="h-3 w-3" />
+        ?
+      </span>
+    );
+  }
+
+  const colorMap: Record<string, string> = {
+    A1: "bg-[rgba(144,200,144,0.18)] text-[#4a8a4a] border-[rgba(144,200,144,0.4)]",
+    A2: "bg-[rgba(144,200,144,0.18)] text-[#4a8a4a] border-[rgba(144,200,144,0.4)]",
+    B1: "bg-[rgba(210,160,60,0.18)] text-[#8a6010] border-[rgba(210,160,60,0.4)]",
+    B2: "bg-[rgba(210,160,60,0.18)] text-[#8a6010] border-[rgba(210,160,60,0.4)]",
+    C1: "bg-[rgba(140,100,210,0.18)] text-[#6040a0] border-[rgba(140,100,210,0.4)]",
+    C2: "bg-[rgba(140,100,210,0.18)] text-[#6040a0] border-[rgba(140,100,210,0.4)]",
+  };
+  const className = colorMap[level] ?? "bg-[rgba(0,0,0,0.05)] text-[color:var(--text-soft)] border-[color:var(--line)]";
+
+  return (
+    <span
+      title={`CEFR level: ${level}`}
+      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${className}`}
+    >
+      {level}
+    </span>
+  );
+}
 
 export function WordNotebookList({
   words,
@@ -79,6 +114,7 @@ export function WordNotebookList({
                       <Badge>{word.deck}</Badge>
                       <Badge>{word.partOfSpeech}</Badge>
                       {word.gender ? <Badge>{word.gender}</Badge> : null}
+                      <CefrBadge level={word.cefrLevel} />
                     </div>
 
                     <div className="mt-2 text-base text-[color:var(--text-soft)]">{word.translation}</div>

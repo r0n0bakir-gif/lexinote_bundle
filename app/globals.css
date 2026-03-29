@@ -260,3 +260,479 @@ select {
     transform: none !important;
   }
 }
+
+/* ============================================================
+   RETRO THEME — Photoshop / Windows XP workspace  (Pink Edition)
+   ============================================================ */
+
+html[data-theme="retro"] {
+  --bg: #6e2848;
+  --bg-soft: #5a2040;
+  --bg-elevated: #8a3860;
+  --surface: #fff0f5;
+  --surface-soft: #fce4ef;
+  --surface-strong: #ffffff;
+  --surface-overlay: rgba(255, 240, 245, 0.95);
+  --line: #e0a8c0;
+  --line-strong: #c07090;
+  --text: #1a0810;
+  --text-soft: #4a1830;
+  --text-muted: #8a5070;
+  --text-inverse: #ffffff;
+  --text-muted-inverse: rgba(255, 255, 255, 0.82);
+  --accent: #c84080;
+  --accent-strong: #a82860;
+  --accent-soft: rgba(200, 64, 128, 0.15);
+  --accent-mint: #9060a0;
+  --accent-gold: #c8905a;
+  --shadow-sm: 1px 1px 3px rgba(80, 0, 30, 0.4);
+  --shadow-md: 2px 2px 8px rgba(80, 0, 30, 0.45);
+  --shadow-lg: 3px 3px 16px rgba(80, 0, 30, 0.55);
+  --ease-standard: ease;
+  --ease-emphasis: ease;
+}
+
+html[data-theme="retro"] body {
+  font-family: Tahoma, "MS Sans Serif", Arial, sans-serif !important;
+  background: #6e2848 !important;
+  color: #1a0810 !important;
+}
+
+html[data-theme="retro"] body::before {
+  display: none;
+}
+
+html[data-theme="retro"] h1,
+html[data-theme="retro"] h2,
+html[data-theme="retro"] h3,
+html[data-theme="retro"] h4 {
+  font-family: Tahoma, "MS Sans Serif", Arial, sans-serif !important;
+  letter-spacing: normal !important;
+  font-variation-settings: normal !important;
+}
+
+/* Reduce the enormous hero text sizes in retro mode */
+html[data-theme="retro"] .text-5xl { font-size: 1.5rem !important; }
+html[data-theme="retro"] .text-6xl { font-size: 1.75rem !important; }
+html[data-theme="retro"] .md\:text-6xl { font-size: 1.75rem !important; }
+html[data-theme="retro"] .text-2xl { font-size: 1rem !important; }
+html[data-theme="retro"] .md\:text-\[2rem\] { font-size: 1rem !important; }
+
+/* Remove smooth motion in retro mode — XP doesn't animate */
+html[data-theme="retro"] .motion-enter,
+html[data-theme="retro"] .motion-enter-soft,
+html[data-theme="retro"] .motion-rise-sm,
+html[data-theme="retro"] .motion-float {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+/* Flatten round corners in retro mode */
+html[data-theme="retro"] [class*="rounded-\["] {
+  border-radius: 0 !important;
+}
+html[data-theme="retro"] [class*="rounded-full"] {
+  border-radius: 2px !important;
+}
+
+/* Remove backdrop blur (retro has no glass) */
+html[data-theme="retro"] [class*="backdrop-blur"] {
+  backdrop-filter: none !important;
+}
+
+/* Retro app-shell: no gradient overlay */
+html[data-theme="retro"] .app-shell::after {
+  display: none;
+}
+
+/* ---- Retro frame layout ---- */
+.retro-frame {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Tahoma, "MS Sans Serif", Arial, sans-serif;
+}
+
+/* ---- PS-style top bar ---- */
+.ps-topbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #1e0818;
+  height: 22px;
+  padding: 0 6px;
+  border-bottom: 1px solid #0a0008;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.ps-topbar-menus {
+  display: flex;
+  gap: 0;
+  flex: 1;
+}
+
+.ps-menu-item {
+  color: #d4d0c8;
+  font-size: 11px;
+  padding: 0 9px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  font-family: Tahoma, sans-serif;
+}
+
+.ps-menu-item:hover {
+  background: #c84080;
+  color: #fff;
+}
+
+.ps-topbar-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #c8c8c8;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: Tahoma, sans-serif;
+  pointer-events: none;
+}
+
+.ps-topbar-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+.ps-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #3a1028;
+  border: 1px solid #6a2848;
+  padding: 1px 6px;
+  font-size: 10px;
+  color: #e0a0c0;
+  font-family: Tahoma, sans-serif;
+}
+
+/* ---- Workspace ---- */
+.retro-workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ---- PS left toolbar ---- */
+.ps-tools {
+  display: flex;
+  flex-direction: column;
+  width: 30px;
+  background: linear-gradient(180deg, #2a0e20 0%, #1e0818 100%);
+  border-right: 1px solid #0a0008;
+  padding: 4px 0;
+  gap: 1px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.ps-tool-btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c8c8c8;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: none;
+  text-decoration: none;
+}
+
+.ps-tool-btn:hover {
+  background: #6e2848;
+  border-color: #c07090;
+  color: #fff;
+}
+
+.ps-tool-btn-active {
+  background: #8a2050;
+  border-color: #e060a0;
+  color: #ffcce0;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.ps-tools-divider {
+  width: 20px;
+  height: 1px;
+  background: #6a2848;
+  margin: 3px 0;
+}
+
+/* ---- Retro content area ---- */
+.retro-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  background: #6e2848;
+}
+
+/* ---- Windows XP-style panel (Pink) ---- */
+.win-panel-outer {
+  background: #fff0f5;
+  border-top: 2px solid #ffd0e8;
+  border-left: 2px solid #ffd0e8;
+  border-right: 2px solid #804060;
+  border-bottom: 2px solid #804060;
+  box-shadow: 1px 1px 0 #c07090, -1px -1px 0 #ffe0f0, 4px 4px 10px rgba(80, 0, 30, 0.4);
+  margin-bottom: 10px;
+}
+
+.win-titlebar {
+  background: linear-gradient(180deg, #e060a0 0%, #c03878 45%, #a02060 100%);
+  color: #fff;
+  padding: 2px 3px 2px 5px;
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  font-family: Tahoma, sans-serif;
+  gap: 4px;
+  min-height: 20px;
+}
+
+.win-titlebar-icon {
+  display: flex;
+  align-items: center;
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+
+.win-title-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+.win-panel-buttons {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.win-btn {
+  width: 16px;
+  height: 14px;
+  font-size: 9px;
+  line-height: 1;
+  text-align: center;
+  background: #f0c8dc;
+  color: #1a0810;
+  border-top: 1px solid #ffd0e8;
+  border-left: 1px solid #ffd0e8;
+  border-right: 1px solid #804060;
+  border-bottom: 1px solid #804060;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Tahoma, sans-serif;
+}
+
+.win-btn:hover {
+  background: #ffd0e8;
+}
+
+.win-btn:active {
+  border-top: 1px solid #804060;
+  border-left: 1px solid #804060;
+  border-right: 1px solid #ffd0e8;
+  border-bottom: 1px solid #ffd0e8;
+}
+
+.win-btn-close:hover {
+  background: #c0392b;
+  color: #fff;
+}
+
+.win-panel-body {
+  padding: 6px 8px;
+  background: #fff0f5;
+  color: #1a0810;
+  font-size: 11px;
+  font-family: Tahoma, sans-serif;
+}
+
+/* Pink XP-style scrollbar */
+html[data-theme="retro"] ::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+html[data-theme="retro"] ::-webkit-scrollbar-track {
+  background: #f0c8dc;
+  border-left: 1px solid #c07090;
+}
+
+html[data-theme="retro"] ::-webkit-scrollbar-thumb {
+  background: #f0c8dc;
+  border-top: 1px solid #ffd0e8;
+  border-left: 1px solid #ffd0e8;
+  border-right: 1px solid #804060;
+  border-bottom: 1px solid #804060;
+}
+
+html[data-theme="retro"] ::-webkit-scrollbar-thumb:hover {
+  background: #e0b0cc;
+}
+
+html[data-theme="retro"] ::-webkit-scrollbar-button {
+  background: #f0c8dc;
+  border-top: 1px solid #ffd0e8;
+  border-left: 1px solid #ffd0e8;
+  border-right: 1px solid #804060;
+  border-bottom: 1px solid #804060;
+  display: block;
+  height: 16px;
+  width: 16px;
+}
+
+/* ---- Retro canvas page layout ---- */
+.retro-canvas-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 10px;
+  align-items: start;
+  font-family: Tahoma, "MS Sans Serif", Arial, sans-serif;
+}
+
+.retro-canvas-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Stat row inside retro windows */
+.retro-stat-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #4a1830;
+  padding: 2px 0;
+  font-family: Tahoma, sans-serif;
+}
+
+/* Override inner component styles when inside a WindowPanel (retro/pink mode) */
+html[data-theme="retro"] .win-panel-body * {
+  font-family: Tahoma, "MS Sans Serif", Arial, sans-serif !important;
+}
+
+html[data-theme="retro"] .win-panel-body input,
+html[data-theme="retro"] .win-panel-body textarea,
+html[data-theme="retro"] .win-panel-body select {
+  background: #fff !important;
+  border: 1px solid #c07090 !important;
+  border-radius: 0 !important;
+  box-shadow: inset 1px 1px 2px rgba(120, 0, 60, 0.15) !important;
+  font-size: 11px !important;
+  /* no padding override — preserves pl-11 on search input so icon doesn't overlap */
+  color: #1a0810 !important;
+}
+
+/* Regular buttons get XP bevel — exclude Switch and SelectTrigger */
+html[data-theme="retro"] .win-panel-body button:not([role="switch"]):not([role="combobox"]) {
+  background: #f0c8dc !important;
+  color: #1a0810 !important;
+  border-top: 1px solid #ffd0e8 !important;
+  border-left: 1px solid #ffd0e8 !important;
+  border-right: 1px solid #804060 !important;
+  border-bottom: 1px solid #804060 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 3px 10px !important;
+  font-size: 11px !important;
+  font-weight: normal !important;
+  min-height: unset !important;
+}
+
+html[data-theme="retro"] .win-panel-body button:not([role="switch"]):not([role="combobox"]):hover {
+  background: #ffd8ec !important;
+}
+
+html[data-theme="retro"] .win-panel-body button:not([role="switch"]):not([role="combobox"]):active {
+  border-top: 1px solid #804060 !important;
+  border-left: 1px solid #804060 !important;
+  border-right: 1px solid #ffd0e8 !important;
+  border-bottom: 1px solid #ffd0e8 !important;
+}
+
+/* Switch toggle: keep as a clean pill in pink tones */
+html[data-theme="retro"] .win-panel-body [role="switch"] {
+  background: #e0a0c0 !important;
+  border: 1px solid #c07090 !important;
+  border-radius: 9999px !important;
+  padding: 0 !important;
+  min-height: unset !important;
+  width: 36px !important;
+  height: 20px !important;
+}
+
+html[data-theme="retro"] .win-panel-body [role="switch"][data-state="checked"] {
+  background: #c84080 !important;
+}
+
+/* Select trigger: look like an XP dropdown */
+html[data-theme="retro"] .win-panel-body [role="combobox"] {
+  background: #fff !important;
+  border: 1px solid #c07090 !important;
+  border-radius: 0 !important;
+  box-shadow: inset 1px 1px 2px rgba(120, 0, 60, 0.1) !important;
+  font-size: 11px !important;
+  height: 22px !important;
+  padding: 0 6px !important;
+  color: #1a0810 !important;
+}
+
+/* Collapse ALL multi-column grids inside panels to 1 column — panels are narrow */
+html[data-theme="retro"] .win-panel-body [class*="grid-cols"] {
+  grid-template-columns: 1fr !important;
+}
+
+/* Toggle option rows: simple horizontal row with label left, switch right */
+html[data-theme="retro"] .win-panel-body [class*="grid-cols"] > div {
+  background: rgba(255, 200, 220, 0.2) !important;
+  border: 1px solid #e0a0c0 !important;
+  border-radius: 0 !important;
+  padding: 5px 8px !important;
+}
+
+/* NotebookFilters outer container: give it a visible inset border so it's separate from panel body */
+html[data-theme="retro"] .win-panel-body > div[class*="rounded-"] {
+  border: 1px solid #e0a0c0 !important;
+  background: #fff8fb !important;
+  padding: 8px !important;
+}
+
+/* FilterSelect inner boxes: subtle inset */
+html[data-theme="retro"] .win-panel-body .rounded-\[18px\] {
+  background: #fff0f5 !important;
+  border: 1px solid #d4a0c0 !important;
+  border-radius: 0 !important;
+  padding: 4px 6px !important;
+}

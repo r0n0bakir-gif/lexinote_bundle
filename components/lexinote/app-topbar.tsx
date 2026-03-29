@@ -15,6 +15,7 @@ import {
 import { ThemeSwitcher } from "@/components/lexinote/theme-switcher";
 import { UserMenu } from "@/components/lexinote/user-menu";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/components/lexinote/theme-provider";
 
 type ProfileSummary = {
   email?: string | null;
@@ -74,6 +75,7 @@ function isActivePath(pathname: string, href: string) {
 export function AppTopbar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { theme } = useTheme();
   const [profile, setProfile] = useState<ProfileSummary | null>(null);
 
   const currentPage = useMemo(() => {
@@ -107,6 +109,10 @@ export function AppTopbar() {
       cancelled = true;
     };
   }, []);
+
+  if (theme === "retro") {
+    return null;
+  }
 
   return (
     <div className="motion-enter mb-8 space-y-4 md:mb-10">

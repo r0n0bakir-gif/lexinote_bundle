@@ -20,6 +20,11 @@ Important setup notes:
 - You need OpenAI configured for AI enrichment.
 - Several pages use client/server patterns that may need small integration fixes in a real repo.
 
+Local run notes:
+- On Windows PowerShell, use `npm.cmd run dev` instead of `npm run dev` if script execution is blocked.
+- This project now runs on `http://127.0.0.1:3001` by default to avoid common `localhost:3000` port conflicts.
+- You can also launch it with `start-dev.bat`.
+
 Start points:
 - /dashboard
 - /words

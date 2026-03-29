@@ -1,31 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Brain, Clock3, Sparkles, Trophy } from "lucide-react";
 import { AppTopbar } from "@/components/lexinote/app-topbar";
 import { FlashcardStudy } from "@/components/lexinote/flashcard-study";
 import { StudySummaryCard } from "@/components/lexinote/study-summary-card";
-import { fetchDueWords, type StudyWord } from "@/lib/study-fetch";
+import { WindowPanel } from "@/components/lexinote/window-panel";
+import { fetchDueWords, type StudyWord, type FetchDueWordsOptions } from "@/lib/study-fetch";
+import { fetchDecks } from "@/lib/deck-fetch";
+import { useTheme } from "@/components/lexinote/theme-provider";
 
 export default function StudyPage() {
   const router = useRouter();
+  const { theme } = useTheme();
   const [words, setWords] = useState<StudyWord[]>([]);
+  const [deckNames, setDeckNames] = useState<string[]>([]);
   const [dueCount, setDueCount] = useState(0);
   const [remainingCount, setRemainingCount] = useState(0);
   const [reviewedCount, setReviewedCount] = useState(0);
+  const [nextDueAt, setNextDueAt] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function loadDueWords() {
+  const loadStudyQueue = useCallback(
+    async (opts: FetchDueWordsOptions = {}) => {
       try {
         setError(null);
         setIsLoading(true);
-        const data = await fetchDueWords();
+
+        // WHY: Fetch deck names alongside the study queue so we can pass them
+        // to FlashcardStudy's empty-state "Switch Deck" picker without an
+        // additional round-trip when the queue runs out.
+        const [data, deckData] = await Promise.all([fetchDueWords(opts), fetchDecks()]);
+
         setWords(data.words);
+        setDeckNames(deckData.map((d) => d.name));
         setDueCount(data.meta.dueCount);
         setRemainingCount(data.meta.dueCount);
+        setNextDueAt(data.meta.nextDueAt ?? null);
+        // WHY: Reset reviewed count when the queue reloads (e.g. after "Switch
+        // Deck"). The count should reflect the current session, not cumulative.
         setReviewedCount(0);
       } catch (err) {
         const message = err instanceof Error ? err.message : "Failed to load study queue.";
@@ -37,10 +52,88 @@ export default function StudyPage() {
       } finally {
         setIsLoading(false);
       }
-    }
+    },
+    [router]
+  );
 
-    loadDueWords();
-  }, [router]);
+  useEffect(() => {
+    loadStudyQueue();
+  }, [loadStudyQueue]);
+
+  // WHY: Reloads the queue with earlyHours=24, surfacing cards that aren't
+  // technically due yet but will be within the next day. This is the backing
+  // logic for the "Review Early" CTA on the empty-queue screen.
+  async function handleReviewEarly() {
+    await loadStudyQueue({ earlyHours: 24 });
+  }
+
+  // WHY: Reloads the queue filtered to a single named deck. Triggered by the
+  // "Switch Deck" picker in the empty-queue screen. Passes deck name — the API
+  // resolves the UUID internally so callers don't need to manage IDs.
+  async function handleSwitchDeck(deck: string) {
+    await loadStudyQueue({ deck });
+  }
+
+  if (theme === "retro") {
+    return (
+      <div className="retro-canvas-grid">
+        {/* Left column: session info */}
+        <div className="retro-canvas-col">
+          <WindowPanel title="session_info.png">
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              <div className="retro-stat-row">
+                <Clock3 size={12} /> {dueCount} cards due
+              </div>
+              <div className="retro-stat-row">
+                <Brain size={12} /> {words.length} in session
+              </div>
+              <div className="retro-stat-row">
+                <Sparkles size={12} /> 4 study modes
+              </div>
+              <div className="retro-stat-row">
+                <Trophy size={12} /> {reviewedCount} reviewed
+              </div>
+            </div>
+          </WindowPanel>
+
+          <WindowPanel title="progress.psd">
+            <StudySummaryCard
+              dueCount={dueCount}
+              remainingCount={remainingCount}
+              reviewedCount={reviewedCount}
+            />
+          </WindowPanel>
+
+          {error ? (
+            <WindowPanel title="error.png">
+              <div style={{ color: "#9b4f42", fontSize: 11 }}>{error}</div>
+            </WindowPanel>
+          ) : null}
+        </div>
+
+        {/* Right column: flashcards */}
+        <div className="retro-canvas-col">
+          <WindowPanel title="study_session.psd">
+            {isLoading ? (
+              <div style={{ padding: "20px 0", color: "#666", fontSize: 11 }}>Loading study queue...</div>
+            ) : (
+              <FlashcardStudy
+                words={words}
+                deckNames={deckNames}
+                nextDueAt={nextDueAt}
+                onSessionChange={({ remainingCount: r, reviewedCount: rc }) => {
+                  setRemainingCount(r);
+                  setReviewedCount(rc);
+                }}
+                onReviewEarly={handleReviewEarly}
+                onSwitchDeck={handleSwitchDeck}
+              />
+            )}
+          </WindowPanel>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app-shell">
@@ -111,7 +204,11 @@ export default function StudyPage() {
         </div>
 
         <div className="motion-enter mb-6" style={{ animationDelay: "320ms" }}>
-          <StudySummaryCard dueCount={dueCount} remainingCount={remainingCount} reviewedCount={reviewedCount} />
+          <StudySummaryCard
+            dueCount={dueCount}
+            remainingCount={remainingCount}
+            reviewedCount={reviewedCount}
+          />
         </div>
 
         {error ? (
@@ -131,10 +228,14 @@ export default function StudyPage() {
           <div className="motion-enter-soft" style={{ animationDelay: "400ms" }}>
             <FlashcardStudy
               words={words}
-              onSessionChange={({ remainingCount, reviewedCount }) => {
-                setRemainingCount(remainingCount);
-                setReviewedCount(reviewedCount);
+              deckNames={deckNames}
+              nextDueAt={nextDueAt}
+              onSessionChange={({ remainingCount: r, reviewedCount: rc }) => {
+                setRemainingCount(r);
+                setReviewedCount(rc);
               }}
+              onReviewEarly={handleReviewEarly}
+              onSwitchDeck={handleSwitchDeck}
             />
           </div>
         )}

@@ -14,6 +14,11 @@ export const themeOptions = [
     label: "Midnight",
     description: "Dark and focused",
   },
+  {
+    value: "retro",
+    label: "Retro",
+    description: "Classic workspace",
+  },
 ] as const;
 
 export type LexiNoteTheme = (typeof themeOptions)[number]["value"];

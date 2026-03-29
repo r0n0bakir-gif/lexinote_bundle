@@ -1,6 +1,7 @@
 import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/lexinote/theme-provider";
+import { RetroShell } from "@/components/lexinote/retro-shell";
 
 const displayFont = Fraunces({
   subsets: ["latin"],
@@ -26,7 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={`${displayFont.variable} ${uiFont.variable}`}>
       <body suppressHydrationWarning>
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <RetroShell>{children}</RetroShell>
+        </ThemeProvider>
       </body>
     </html>
   );
