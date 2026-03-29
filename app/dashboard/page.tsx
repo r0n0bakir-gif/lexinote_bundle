@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowUpRight, Layers3, Sparkles, Target, Trophy } from "lucide-react";
 import { AppTopbar } from "@/components/lexinote/app-topbar";
+import { WindowPanel } from "@/components/lexinote/window-panel";
+import { useTheme } from "@/components/lexinote/theme-provider";
 import { DashboardActivityHeatmap } from "@/components/lexinote/dashboard-activity-heatmap";
 import { DashboardDeckProgress } from "@/components/lexinote/dashboard-deck-progress";
 import { DashboardProgressChart } from "@/components/lexinote/dashboard-progress-chart";
@@ -38,6 +40,7 @@ const emptyStats: DashboardStats = {
 
 export default function DashboardPage() {
   const router = useRouter();
+  const { theme } = useTheme();
   const [stats, setStats] = useState<DashboardStats>(emptyStats);
   const [recentActivity, setRecentActivity] = useState<DashboardActivityItem[]>([]);
   const [decks, setDecks] = useState<DashboardDeck[]>([]);
@@ -82,6 +85,85 @@ export default function DashboardPage() {
 
     loadDashboard();
   }, [router]);
+
+  if (theme === "retro") {
+    return (
+      <div className="retro-canvas-grid">
+        {/* Left column */}
+        <div className="retro-canvas-col">
+          <WindowPanel title="overview.png">
+            <div className="retro-stat-row"><Target size={12} /> {stats.dueCount} cards due now</div>
+            <div className="retro-stat-row"><Trophy size={12} /> {stats.streak} day streak</div>
+            <div className="retro-stat-row"><Sparkles size={12} /> {insights.completionRate}% learned</div>
+          </WindowPanel>
+
+          <WindowPanel title="stats.psd">
+            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              {[
+                { label: "Due for review", value: stats.dueCount, hint: "ready now" },
+                { label: "Total words", value: stats.totalWords, hint: "in notebook" },
+                { label: "Learned", value: stats.learnedWords, hint: "fully retained" },
+                { label: "Decks", value: stats.deckCount, hint: "active" },
+                { label: "Learning", value: stats.learningWords, hint: "early rep" },
+                { label: "In review", value: stats.reviewWords, hint: "active rotation" },
+                { label: "Today reviews", value: stats.todayReviews, hint: "done today" },
+              ].map(({ label, value, hint }) => (
+                <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 0", borderBottom: "1px solid #e0a0c0", fontSize: 11 }}>
+                  <span style={{ color: "#4a1830" }}>{label}</span>
+                  <span style={{ fontWeight: "bold", color: "#c84080" }}>{value} <span style={{ fontWeight: "normal", color: "#8a5070" }}>{hint}</span></span>
+                </div>
+              ))}
+            </div>
+          </WindowPanel>
+
+          <WindowPanel title="decks.jpg">
+            {decks.length ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                {decks.slice(0, 6).map((deck, i) => (
+                  <div key={deck.id} style={{ display: "flex", justifyContent: "space-between", padding: "3px 6px", background: "rgba(255,200,220,0.2)", border: "1px solid #e0a0c0", fontSize: 11 }}>
+                    <span style={{ color: "#1a0810", fontWeight: "bold" }}>{deck.name}</span>
+                    <span style={{ color: "#8a5070" }}>Deck {i + 1}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ color: "#8a5070", fontSize: 11 }}>No decks yet.</div>
+            )}
+          </WindowPanel>
+
+          {error ? (
+            <WindowPanel title="error.png">
+              <div style={{ color: "#9b4f42", fontSize: 11 }}>{error}</div>
+            </WindowPanel>
+          ) : null}
+        </div>
+
+        {/* Right column */}
+        <div className="retro-canvas-col">
+          <WindowPanel title="focus.png">
+            <div style={{ fontSize: 13, fontWeight: "bold", color: "#1a0810", marginBottom: 4 }}>
+              {stats.dueCount ? "Review first, then capture." : "A light day — add and organize."}
+            </div>
+            <div style={{ fontSize: 11, color: "#4a1830" }}>
+              {stats.dueCount ? "Clear due cards first, then return to capture." : "A good moment to add words or tidy decks."}
+            </div>
+          </WindowPanel>
+
+          <WindowPanel title="streak.psd">
+            <DashboardStreakCard streak={stats.streak} todayReviews={stats.todayReviews} todayWordsAdded={stats.todayWordsAdded} />
+          </WindowPanel>
+
+          <WindowPanel title="quick_actions.psd">
+            <DashboardQuickActions />
+          </WindowPanel>
+
+          <WindowPanel title="activity.psd">
+            <DashboardRecentActivity items={recentActivity} />
+          </WindowPanel>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app-shell">

@@ -20,6 +20,7 @@ const initialFilters: NotebookFilterState = {
   source: "all",
   partOfSpeech: "all",
   tag: "all",
+  cefr: "all",
 };
 
 export default function WordsPage() {
